@@ -4,10 +4,6 @@ A ready-to-use boilerplate for building desktop applications with **Qt 6**, **QM
 
 The included demo app is a simple point-of-sale (cashier) system — just enough real functionality to show every layer of the stack working together: authentication, SQLite persistence, CSV export, and serial port enumeration.
 
-![alt text](docs/image.png)
-![alt text](docs/image-1.png)
-![alt text](docs/image-2.png)
-
 ---
 
 ## What's Inside
@@ -122,6 +118,14 @@ qt-qml-project/
 ├── qml.qrc                    # QML resource registration
 └── architecture.md            # Detailed architecture docs
 ```
+
+---
+
+## Screenshots
+
+![alt text](docs/image.png)
+![alt text](docs/image-1.png)
+![alt text](docs/image-2.png)
 
 ---
 
