@@ -38,7 +38,7 @@ Item {
                     text: "Rp " + cashierVm.currentPrice
                     font.bold: true
                     color: "#0078d4"
-                    implicitWidth: 90
+                    Layout.preferredWidth: 90
                 }
 
                 Item { Layout.fillWidth: true }

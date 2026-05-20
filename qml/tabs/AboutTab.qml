@@ -30,7 +30,7 @@ Item {
                 ComboBox {
                     model: []
                     implicitWidth: 220
-                    placeholderText: "No devices"
+                    displayText: count === 0 ? "No devices" : currentText
                 }
             }
         }
