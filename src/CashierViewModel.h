@@ -19,6 +19,7 @@ class CashierViewModel : public QObject {
 
 public:
     explicit CashierViewModel(QObject* parent = nullptr);
+    ~CashierViewModel();
 
     QString      buyerName()         const { return m_buyerName; }
     int          selectedItemIndex() const { return m_selectedItemIndex; }
@@ -53,8 +54,9 @@ private:
     QList<models::SaleRecord> m_records;
     QStringList m_log;
     QString     m_exportPath;
-    int         m_nextId{1};
 
+    void initDb();
+    void loadRecords();
     int  priceForIndex(int index) const;
     void appendLog(const QString& entry);
 };

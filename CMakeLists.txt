@@ -10,8 +10,8 @@ if(MSVC)
     add_compile_options(/Zc:__cplusplus)
 endif()
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Quick Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick Widgets)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Quick Widgets Sql)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick Widgets Sql)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -36,6 +36,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE 
     Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Sql
 )
 
 include(GNUInstallDirs)

@@ -5,7 +5,8 @@
       "Bash(Select-Object Name, Mode)",
       "Bash(Format-Table -AutoSize)",
       "Bash(cmake --preset debug-mingw)",
-      "Bash(cmake --build build-debug-mingw)"
+      "Bash(cmake --build build-debug-mingw)",
+      "Bash(taskkill /F /IM qt-qml-project.exe)"
     ]
   }
 }

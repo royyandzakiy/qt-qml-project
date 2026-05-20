@@ -3,11 +3,69 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QStandardPaths>
+#include <QDir>
+
+static const QString DB_CONNECTION = "cashier_db";
 
 CashierViewModel::CashierViewModel(QObject* parent)
     : QObject(parent)
     , m_availableItems({"Cheetos", "Cornetto", "Chocolatos"})
-{}
+{
+    initDb();
+    loadRecords();
+}
+
+CashierViewModel::~CashierViewModel() {
+    QSqlDatabase::database(DB_CONNECTION).close();
+    QSqlDatabase::removeDatabase(DB_CONNECTION);
+}
+
+void CashierViewModel::initDb() {
+    const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir().mkpath(dataDir);
+
+    auto db = QSqlDatabase::addDatabase("QSQLITE", DB_CONNECTION);
+    db.setDatabaseName(dataDir + "/cashier.db");
+
+    if (!db.open()) {
+        QMessageBox::critical(nullptr, "Database",
+            "Cannot open database:\n" + db.lastError().text());
+        return;
+    }
+
+    QSqlQuery q(db);
+    q.exec(
+        "CREATE TABLE IF NOT EXISTS sales ("
+        "  id        INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "  buyerName TEXT    NOT NULL,"
+        "  item      TEXT    NOT NULL,"
+        "  price     INTEGER NOT NULL,"
+        "  timestamp TEXT    NOT NULL"
+        ")"
+    );
+}
+
+void CashierViewModel::loadRecords() {
+    auto db = QSqlDatabase::database(DB_CONNECTION);
+    QSqlQuery q("SELECT id, buyerName, item, price, timestamp FROM sales ORDER BY id ASC", db);
+
+    m_records.clear();
+    while (q.next()) {
+        models::SaleRecord rec;
+        rec.id        = q.value(0).toInt();
+        rec.buyerName = q.value(1).toString();
+        rec.item      = q.value(2).toString();
+        rec.price     = q.value(3).toInt();
+        rec.timestamp = QDateTime::fromString(q.value(4).toString(), "yyyy-MM-dd HH:mm:ss");
+        m_records.append(rec);
+    }
+
+    emit recordsChanged();
+}
 
 int CashierViewModel::currentPrice() const {
     return priceForIndex(m_selectedItemIndex);
@@ -48,19 +106,33 @@ void CashierViewModel::onAddRecord() {
 
     const QString item  = m_availableItems.value(m_selectedItemIndex);
     const int     price = priceForIndex(m_selectedItemIndex);
+    const auto    now   = QDateTime::currentDateTime();
+
+    auto db = QSqlDatabase::database(DB_CONNECTION);
+    QSqlQuery q(db);
+    q.prepare("INSERT INTO sales (buyerName, item, price, timestamp) VALUES (?, ?, ?, ?)");
+    q.addBindValue(m_buyerName.trimmed());
+    q.addBindValue(item);
+    q.addBindValue(price);
+    q.addBindValue(now.toString("yyyy-MM-dd HH:mm:ss"));
+
+    if (!q.exec()) {
+        QMessageBox::critical(nullptr, "Database", "Insert failed:\n" + q.lastError().text());
+        return;
+    }
 
     models::SaleRecord rec;
-    rec.id        = m_nextId++;
+    rec.id        = q.lastInsertId().toInt();
     rec.buyerName = m_buyerName.trimmed();
     rec.item      = item;
     rec.price     = price;
-    rec.timestamp = QDateTime::currentDateTime();
+    rec.timestamp = now;
 
     m_records.append(rec);
     emit recordsChanged();
 
     appendLog(QString("[%1] #%2 | %3 | %4 | Rp %5")
-        .arg(rec.timestamp.toString("HH:mm:ss"))
+        .arg(now.toString("HH:mm:ss"))
         .arg(rec.id)
         .arg(rec.item)
         .arg(rec.buyerName)
@@ -73,6 +145,13 @@ void CashierViewModel::onRemoveRecord(int index) {
     if (index < 0 || index >= m_records.size()) return;
 
     const auto& rec = m_records.at(index);
+
+    auto db = QSqlDatabase::database(DB_CONNECTION);
+    QSqlQuery q(db);
+    q.prepare("DELETE FROM sales WHERE id = ?");
+    q.addBindValue(rec.id);
+    q.exec();
+
     appendLog(QString("[%1] REMOVED #%2 | %3 | %4")
         .arg(QDateTime::currentDateTime().toString("HH:mm:ss"))
         .arg(rec.id)
@@ -118,7 +197,7 @@ void CashierViewModel::onExport() {
             << r.price << "\n";
     }
 
-    appendLog(QString("[%1] Exported %2 records → %3")
+    appendLog(QString("[%1] Exported %2 records to %3")
         .arg(QDateTime::currentDateTime().toString("HH:mm:ss"))
         .arg(m_records.size())
         .arg(m_exportPath));
