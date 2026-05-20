@@ -1,0 +1,25 @@
+import QmlProject
+
+Project {
+    mainFile: "qml/Main.qml" /* Change this to your entry point file path */
+
+    /* Include all QML files under your current directory and subdirectories */
+    QmlFiles {
+        directory: "."
+        recursive: true
+    }
+
+    /* Include all images, icons, or audio files */
+    JavaScriptFiles {
+        directory: "."
+        recursive: true
+    }
+
+    ImageFiles {
+        directory: "."
+        recursive: true
+    }
+
+    /* Target the version of Qt you are building with */
+    importPaths: [ "." ]
+}

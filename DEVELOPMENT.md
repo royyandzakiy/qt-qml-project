@@ -1,0 +1,10 @@
+- first page as login screen, fill in username admin, pass admin
+- second page
+    - first tab
+        - cashier app to add remove buy records; date auto added, buyer name manual fill in everytime, item (dropdown of cheetos, cornetto, chocolatos), price (auto set price)
+        - below section shows a running log with timestamp and simply counting up
+        - data is stored in variable (later will add sqlite, make it easy to transition)
+        - save to file select where to save, then export button
+    - second tab
+        - to show random about the app
+        - shows list of usb devices (later, just empty dropdown for now)

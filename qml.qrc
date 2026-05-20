@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/Main.qml</file>
+        <file>qml/LoginPage.qml</file>
+        <file>qml/MainPage.qml</file>
+        <file>qml/tabs/CashierTab.qml</file>
+        <file>qml/tabs/AboutTab.qml</file>
+    </qresource>
+</RCC>

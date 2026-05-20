@@ -1,0 +1,117 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "base-ninja",
+      "generator": "Ninja",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "base-mingw",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "base-debug",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "base-release",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "base-profile",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "base-macos",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    },
+    {
+      "name": "base-linux",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "debug-mingw",
+      "description": "MinGW Debug build with Ninja",
+      "binaryDir": "${sourceDir}/build-debug-mingw",
+      "inherits": [
+        "base-ninja",
+        "base-mingw",
+        "base-debug"
+      ]
+    },
+    {
+      "name": "release-mingw",
+      "description": "MinGW Release build with Ninja",
+      "binaryDir": "${sourceDir}/build-release-mingw",
+      "inherits": [
+        "base-ninja",
+        "base-mingw",
+        "base-release"
+      ]
+    },
+    {
+      "name": "profile-mingw",
+      "description": "MinGW RelWithDebInfo build with Ninja",
+      "binaryDir": "${sourceDir}/build-profile-mingw",
+      "inherits": [
+        "base-ninja",
+        "base-mingw",
+        "base-profile"
+      ]
+    },
+    {
+      "name": "debug-mingw-makefiles",
+      "description": "MinGW Debug build with MinGW Makefiles (fallback)",
+      "generator": "MinGW Makefiles",
+      "binaryDir": "${sourceDir}/build-debug-mingw-makefiles",
+      "inherits": [
+        "base-mingw",
+        "base-debug"
+      ],
+      "cacheVariables": {
+        "CMAKE_MAKE_PROGRAM": "mingw32-make"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug-mingw",
+      "configurePreset": "debug-mingw"
+    },
+    {
+      "name": "release-mingw",
+      "configurePreset": "release-mingw"
+    },
+    {
+      "name": "profile-mingw",
+      "configurePreset": "profile-mingw"
+    }
+  ]
+}
