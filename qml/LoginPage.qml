@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import CashierApp 1.0
 
 Item {
     ColumnLayout {
@@ -38,13 +39,13 @@ Item {
             Layout.fillWidth: true
             echoMode: TextInput.Password
             placeholderText: "Enter password"
-            Keys.onReturnPressed: authVm.onLogin(usernameField.text, passwordField.text)
+            Keys.onReturnPressed: AuthVM.onLogin(usernameField.text, passwordField.text)
         }
 
         Label {
-            text: authVm.errorMessage
+            text: AuthVM.errorMessage
             color: "red"
-            visible: authVm.errorMessage !== ""
+            visible: AuthVM.errorMessage !== ""
             wrapMode: Text.WordWrap
             Layout.fillWidth: true
         }
@@ -52,7 +53,7 @@ Item {
         Button {
             text: "Login"
             Layout.fillWidth: true
-            onClicked: authVm.onLogin(usernameField.text, passwordField.text)
+            onClicked: AuthVM.onLogin(usernameField.text, passwordField.text)
         }
     }
 }

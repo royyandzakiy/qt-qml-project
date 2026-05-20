@@ -3,7 +3,6 @@ project(qt-qml-project VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(QT_QML_GENERATE_QMLLS_INI ON)
 
 if(MSVC)
@@ -15,15 +14,24 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick Widgets Sql SerialP
 
 qt_standard_project_setup(REQUIRES 6.8)
 
-qt6_add_resources(QML_RESOURCES qml.qrc)
-
 qt_add_executable(${PROJECT_NAME}
     src/main.cpp
     src/Models.h
-    src/AuthViewModel.h    src/AuthViewModel.cpp
-    src/CashierViewModel.h src/CashierViewModel.cpp
-    src/DeviceViewModel.h  src/DeviceViewModel.cpp
-    ${QML_RESOURCES}
+)
+
+qt_add_qml_module(${PROJECT_NAME}
+    URI CashierApp
+    VERSION 1.0
+    QML_FILES
+        qml/Main.qml
+        qml/LoginPage.qml
+        qml/MainPage.qml
+        qml/tabs/CashierTab.qml
+        qml/tabs/AboutTab.qml
+    SOURCES
+        src/AuthViewModel.h    src/AuthViewModel.cpp
+        src/CashierViewModel.h src/CashierViewModel.cpp
+        src/DeviceViewModel.h  src/DeviceViewModel.cpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -33,8 +41,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     WIN32_EXECUTABLE FALSE
 )
 
+target_include_directories(${PROJECT_NAME} PRIVATE src)
+
 target_link_libraries(${PROJECT_NAME}
-    PRIVATE 
+    PRIVATE
     Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Sql

@@ -1,6 +1,9 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import CashierApp 1.0
 
 Item {
     ColumnLayout {
@@ -23,27 +26,27 @@ Item {
                     id: buyerField
                     implicitWidth: 180
                     placeholderText: "Enter buyer name"
-                    onTextEdited: cashierVm.setBuyerName(text)
+                    onTextEdited: CashierVM.setBuyerName(text)
 
                     Connections {
-                        target: cashierVm
+                        target: CashierVM
                         function onBuyerNameChanged() {
-                            if (buyerField.text !== cashierVm.buyerName)
-                                buyerField.text = cashierVm.buyerName
+                            if (buyerField.text !== CashierVM.buyerName)
+                                buyerField.text = CashierVM.buyerName
                         }
                     }
                 }
 
                 Label { text: "Item:" }
                 ComboBox {
-                    model: cashierVm.availableItems
+                    model: CashierVM.availableItems
                     implicitWidth: 140
-                    onCurrentIndexChanged: cashierVm.setSelectedItemIndex(currentIndex)
+                    onCurrentIndexChanged: CashierVM.setSelectedItemIndex(currentIndex)
                 }
 
                 Label { text: "Price:" }
                 Label {
-                    text: "Rp " + cashierVm.currentPrice
+                    text: "Rp " + CashierVM.currentPrice
                     font.bold: true
                     color: "#0078d4"
                     Layout.preferredWidth: 90
@@ -54,14 +57,14 @@ Item {
                 Button {
                     text: "Add"
                     implicitWidth: 80
-                    onClicked: cashierVm.onAddRecord()
+                    onClicked: CashierVM.onAddRecord()
                 }
             }
         }
 
         // ── Records ──────────────────────────────────────────────────────────
         GroupBox {
-            title: "Records  (" + cashierVm.totalRecords + ")"
+            title: "Records  (" + CashierVM.totalRecords + ")"
             Layout.fillWidth: true
             Layout.fillHeight: true
 
@@ -93,13 +96,17 @@ Item {
                     id: recordsView
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    model: cashierVm.records
+                    model: CashierVM.records
                     clip: true
 
                     delegate: Rectangle {
-                        width: recordsView.width
+                        id: row
+                        required property int index
+                        required property var modelData
+
+                        width: ListView.view.width
                         height: 26
-                        color: index % 2 === 0 ? "#ffffff" : "#f7f7f7"
+                        color: row.index % 2 === 0 ? "#ffffff" : "#f7f7f7"
 
                         RowLayout {
                             anchors.fill: parent
@@ -107,17 +114,17 @@ Item {
                             anchors.rightMargin: 6
                             spacing: 0
 
-                            Label { text: modelData.id;        Layout.preferredWidth: 36;  verticalAlignment: Text.AlignVCenter; height: parent.height }
-                            Label { text: modelData.timestamp; Layout.preferredWidth: 155; verticalAlignment: Text.AlignVCenter; height: parent.height; font.pixelSize: 11 }
-                            Label { text: modelData.buyerName; Layout.preferredWidth: 160; verticalAlignment: Text.AlignVCenter; height: parent.height; elide: Text.ElideRight }
-                            Label { text: modelData.item;      Layout.preferredWidth: 115; verticalAlignment: Text.AlignVCenter; height: parent.height }
-                            Label { text: "Rp " + modelData.price; Layout.preferredWidth: 90; verticalAlignment: Text.AlignVCenter; height: parent.height }
+                            Label { text: row.modelData.id;        Layout.preferredWidth: 36;  verticalAlignment: Text.AlignVCenter; height: parent.height }
+                            Label { text: row.modelData.timestamp; Layout.preferredWidth: 155; verticalAlignment: Text.AlignVCenter; height: parent.height; font.pixelSize: 11 }
+                            Label { text: row.modelData.buyerName; Layout.preferredWidth: 160; verticalAlignment: Text.AlignVCenter; height: parent.height; elide: Text.ElideRight }
+                            Label { text: row.modelData.item;      Layout.preferredWidth: 115; verticalAlignment: Text.AlignVCenter; height: parent.height }
+                            Label { text: "Rp " + row.modelData.price; Layout.preferredWidth: 90; verticalAlignment: Text.AlignVCenter; height: parent.height }
                             Item  { Layout.fillWidth: true }
                             Button {
                                 text: "Remove"
                                 Layout.preferredWidth: 74
                                 implicitHeight: 22
-                                onClicked: cashierVm.onRemoveRecord(index)
+                                onClicked: CashierVM.onRemoveRecord(row.index)
                             }
                         }
                     }
@@ -155,9 +162,9 @@ Item {
                                 repeat: true
                                 onTriggered: {
                                     sessionLabel.elapsed++
-                                    var h = Math.floor(sessionLabel.elapsed / 3600)
-                                    var m = Math.floor((sessionLabel.elapsed % 3600) / 60)
-                                    var s = sessionLabel.elapsed % 60
+                                    const h = Math.floor(sessionLabel.elapsed / 3600)
+                                    const m = Math.floor((sessionLabel.elapsed % 3600) / 60)
+                                    const s = sessionLabel.elapsed % 60
                                     sessionLabel.text =
                                         (h < 10 ? "0" : "") + h + ":" +
                                         (m < 10 ? "0" : "") + m + ":" +
@@ -170,9 +177,10 @@ Item {
                     ListView {
                         Layout.fillWidth: true
                         height: 100
-                        model: cashierVm.log
+                        model: CashierVM.log
                         clip: true
                         delegate: Text {
+                            required property string modelData
                             width: ListView.view.width
                             text: modelData
                             font.pixelSize: 11
@@ -197,21 +205,21 @@ Item {
                         Layout.fillWidth: true
                         TextField {
                             readOnly: true
-                            text: cashierVm.exportPath
+                            text: CashierVM.exportPath
                             Layout.fillWidth: true
                             placeholderText: "No file selected"
                         }
                         Button {
                             text: "..."
                             implicitWidth: 32
-                            onClicked: cashierVm.onSelectExportPath()
+                            onClicked: CashierVM.onSelectExportPath()
                         }
                     }
 
                     Button {
                         text: "Export to CSV"
                         Layout.fillWidth: true
-                        onClicked: cashierVm.onExport()
+                        onClicked: CashierVM.onExport()
                     }
 
                     Item { Layout.fillHeight: true }

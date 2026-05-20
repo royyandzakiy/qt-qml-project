@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import CashierApp 1.0
 
 ApplicationWindow {
     id: root
@@ -13,7 +14,7 @@ ApplicationWindow {
 
     StackLayout {
         anchors.fill: parent
-        currentIndex: authVm.isLoggedIn ? 1 : 0
+        currentIndex: AuthVM.isLoggedIn ? 1 : 0
 
         LoginPage {}
         MainPage  {}

@@ -1,9 +1,5 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include "AuthViewModel.h"
-#include "CashierViewModel.h"
-#include "DeviceViewModel.h"
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
@@ -11,15 +7,7 @@ int main(int argc, char* argv[]) {
     app.setOrganizationName("Compacompa");
 
     QQmlApplicationEngine engine;
-
-    auto* authVm    = new AuthViewModel(&engine);
-    auto* cashierVm = new CashierViewModel(&engine);
-    auto* deviceVm  = new DeviceViewModel(&engine);
-    engine.rootContext()->setContextProperty("authVm",    authVm);
-    engine.rootContext()->setContextProperty("cashierVm", cashierVm);
-    engine.rootContext()->setContextProperty("deviceVm",  deviceVm);
-
-    engine.load(QUrl(QStringLiteral("qrc:/qml/Main.qml")));
+    engine.loadFromModule("CashierApp", "Main");
     if (engine.rootObjects().isEmpty())
         return -1;
 

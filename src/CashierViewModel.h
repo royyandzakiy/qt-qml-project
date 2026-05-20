@@ -3,10 +3,15 @@
 #include <QStringList>
 #include <QVariantList>
 #include <QList>
+#include <QtQmlIntegration/qqmlintegration.h>
+class QQmlEngine;
+class QJSEngine;
 #include "Models.h"
 
 class CashierViewModel : public QObject {
     Q_OBJECT
+    QML_NAMED_ELEMENT(CashierVM)
+    QML_SINGLETON
 
     Q_PROPERTY(QString      buyerName         READ buyerName         WRITE setBuyerName         NOTIFY buyerNameChanged)
     Q_PROPERTY(int          selectedItemIndex READ selectedItemIndex WRITE setSelectedItemIndex  NOTIFY selectedItemIndexChanged)
@@ -20,6 +25,10 @@ class CashierViewModel : public QObject {
 public:
     explicit CashierViewModel(QObject* parent = nullptr);
     ~CashierViewModel();
+
+    static CashierViewModel* create(QQmlEngine*, QJSEngine*) {
+        return new CashierViewModel;
+    }
 
     QString      buyerName()         const { return m_buyerName; }
     int          selectedItemIndex() const { return m_selectedItemIndex; }
