@@ -29,8 +29,8 @@ public:
     QStringList  log()               const { return m_log; }
     QString      exportPath()        const { return m_exportPath; }
 
-    void setBuyerName(const QString& v);
-    void setSelectedItemIndex(int v);
+    Q_INVOKABLE void setBuyerName(const QString& v);
+    Q_INVOKABLE void setSelectedItemIndex(int v);
 
 signals:
     void buyerNameChanged();

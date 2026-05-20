@@ -20,10 +20,18 @@ Item {
 
                 Label { text: "Buyer Name:" }
                 TextField {
+                    id: buyerField
                     implicitWidth: 180
                     placeholderText: "Enter buyer name"
-                    text: cashierVm.buyerName
                     onTextEdited: cashierVm.setBuyerName(text)
+
+                    Connections {
+                        target: cashierVm
+                        function onBuyerNameChanged() {
+                            if (buyerField.text !== cashierVm.buyerName)
+                                buyerField.text = cashierVm.buyerName
+                        }
+                    }
                 }
 
                 Label { text: "Item:" }
