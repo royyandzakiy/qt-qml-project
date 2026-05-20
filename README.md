@@ -8,7 +8,6 @@ The included demo app is a simple point-of-sale (cashier) system — just enough
 ![alt text](docs/image-1.png)
 ![alt text](docs/image-2.png)
 
-
 ---
 
 ## What's Inside
