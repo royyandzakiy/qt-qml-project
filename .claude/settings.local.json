@@ -6,7 +6,8 @@
       "Bash(Format-Table -AutoSize)",
       "Bash(cmake --preset debug-mingw)",
       "Bash(cmake --build build-debug-mingw)",
-      "Bash(taskkill /F /IM qt-qml-project.exe)"
+      "Bash(taskkill /F /IM qt-qml-project.exe)",
+      "PowerShell(Get-ChildItem -Path . -Recurse | Select-Object FullName | ForEach-Object {$_.FullName})"
     ]
   }
 }
