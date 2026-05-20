@@ -1,0 +1,21 @@
+{
+	// --- CMake ---
+	"cmake.useCMakePresets": "always",
+	"cmake.options.statusBarVisibility": "visible",
+    "cmake.configureSettings": {
+        "CMAKE_PREFIX_PATH": "C:/Qt/6.9.0/mingw_64"
+    },
+    "files.associations": {
+        "*.qml": "qml",
+        "*.qrc": "xml"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "terminal.integrated.env.windows": {
+        "PATH": "C:/msys64/mingw64/bin;C:/Qt/6.9.0/mingw_64/bin;${env:PATH}"
+    },
+    "cmake.generator": "Ninja",
+    "cmake.configureEnvironment": {
+        "CC": "gcc",
+        "CXX": "g++"
+    }
+}

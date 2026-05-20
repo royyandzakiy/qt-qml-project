@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "name": "qt6",
+            "includePath": [
+                "${workspaceFolder}/**",
+				"C:/Qt/6.9.0/mingw_64/include/**"
+            ],
+            "cppStandard": "c++20",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}
