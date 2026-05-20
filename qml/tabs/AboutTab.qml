@@ -16,7 +16,7 @@ Item {
                 spacing: 4
                 Label { text: "Cashier App  v1.0";               font.bold: true }
                 Label { text: "Simple point-of-sale application"; color: "#555" }
-                Label { text: "Organization: LMesh";              color: "#555" }
+                Label { text: "Organization: Compacompa";              color: "#555" }
             }
         }
 
@@ -24,13 +24,25 @@ Item {
             title: "Devices"
             Layout.fillWidth: true
 
-            RowLayout {
-                spacing: 8
-                Label { text: "USB Devices:" }
-                ComboBox {
-                    model: []
-                    implicitWidth: 220
-                    displayText: count === 0 ? "No devices" : currentText
+            ColumnLayout {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                spacing: 6
+
+                RowLayout {
+                    spacing: 8
+                    Label { text: "COM Port:" }
+                    ComboBox {
+                        id: portCombo
+                        model: deviceVm.availablePorts
+                        Layout.fillWidth: true
+                        displayText: count === 0 ? "No devices connected" : currentText
+                    }
+                    Button {
+                        text: "Refresh"
+                        implicitWidth: 80
+                        onClicked: deviceVm.onRefreshPorts()
+                    }
                 }
             }
         }

@@ -10,8 +10,8 @@ if(MSVC)
     add_compile_options(/Zc:__cplusplus)
 endif()
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Quick Widgets Sql)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick Widgets Sql)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Quick Widgets Sql SerialPort)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick Widgets Sql SerialPort)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -22,6 +22,7 @@ qt_add_executable(${PROJECT_NAME}
     src/Models.h
     src/AuthViewModel.h    src/AuthViewModel.cpp
     src/CashierViewModel.h src/CashierViewModel.cpp
+    src/DeviceViewModel.h  src/DeviceViewModel.cpp
     ${QML_RESOURCES}
 )
 
@@ -37,6 +38,7 @@ target_link_libraries(${PROJECT_NAME}
     Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Sql
+    Qt${QT_VERSION_MAJOR}::SerialPort
 )
 
 include(GNUInstallDirs)
