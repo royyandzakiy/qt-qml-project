@@ -10,8 +10,26 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        TabButton { text: "Cashier" }
-        TabButton { text: "About" }
+        TabButton {
+            text: "Cashier"
+            background: Rectangle { color: parent.checked ? "#f0f0f0" : "#dcdcdc" }
+            contentItem: Text {
+                text: parent.text
+                color: "#222222"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+        TabButton {
+            text: "About"
+            background: Rectangle { color: parent.checked ? "#f0f0f0" : "#dcdcdc" }
+            contentItem: Text {
+                text: parent.text
+                color: "#222222"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
     }
 
     StackLayout {
