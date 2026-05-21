@@ -1,4 +1,4 @@
-# Qt/QML MVVM Project Template
+u# Qt/QML MVVM Project Template
 
 A ready-to-use boilerplate for building desktop applications with **Qt 6**, **QML**, and **C++** following the **MVVM** architectural pattern.
 
@@ -196,6 +196,24 @@ Q_INVOKABLE void setSelectedItemIndex(int v);
 ListView {
     onCurrentIndexChanged: CashierVM.setSelectedItemIndex(currentIndex)
 }
+
+```
+
+---
+
+### Architecture Map
+```
+  [ QML FRONTEND ] 
+    ├── Bindings & Views (Display & Auto-refresh State)
+    └── Attached Signals (Handle Lifecycle / UI Events)
+           │
+           ▼ (Commands Down via Invokables / Slots)
+  ======================================================= [ The Qt Bridge ]
+           ▲ (Data & Notifications Up via Properties / Signals)
+           │
+  [ C++ BACKEND ]
+    ├── QObject Tree (Manages memory automatically)
+    └── Models & Logical Engines (Process & structure data)
 
 ```
 
