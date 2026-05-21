@@ -145,7 +145,59 @@ C++ as engine, QML as steering wheel.
 ### The Golden Rule of Qt Bridge Architecture
 >  * **Data goes UP** (C++ \rightarrow QML) via **Properties** and **Signals**.
 >  * **Commands go DOWN** (QML \rightarrow C++) via **Slots** and **Invokables**.
->
+
+### Properties (Q_PROPERTY)
+```cpp
+// C++ Header
+Q_PROPERTY(QString buyerName READ buyerName WRITE setBuyerName NOTIFY buyerNameChanged)
+
+// QML Usage
+TextField {
+    text: CashierVM.buyerName
+    onTextChanged: CashierVM.buyerName = text
+}
+```
+### Signals (signals:)
+```cpp
+// C++ Implementation
+void CashierViewModel::setSelectedItemIndex(int v) {
+    if (m_selectedItemIndex != v) {
+        m_selectedItemIndex = v;
+        emit currentPriceChanged(); 
+    }
+}
+
+// QML Usage
+Text {
+    text: "Price: $" + CashierVM.currentPrice
+}
+
+```
+### Slots (public slots:)
+```cpp
+// C++ Implementation
+void CashierViewModel::onExport() {
+    // Heavy backend processing logic here
+}
+
+// QML Usage
+Button {
+    text: "Export"
+    onClicked: CashierVM.onExport()
+}
+
+```
+### Invokables (Q_INVOKABLE)
+```cpp
+// C++ Header
+Q_INVOKABLE void setSelectedItemIndex(int v);
+
+// QML Usage
+ListView {
+    onCurrentIndexChanged: CashierVM.setSelectedItemIndex(currentIndex)
+}
+
+```
 
 ---
 
