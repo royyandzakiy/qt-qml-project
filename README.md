@@ -83,13 +83,12 @@ The build system, `.qmlls.ini`, and CMake presets all work out of the box with n
 
 ## Opening in Qt Designer / Qt Creator
 
-The file **`qt_qml_project.qmlproject`** is a Qt Creator QML project file. Opening it in Qt Creator gives you:
+The file **`qt_qml_project.qmlproject`** is a Qt Design Studio project file. Opening it in Qt Design Studio gives you:
 
 - Full QML file indexing and navigation
-- Live QML design view (Qt Design Studio compatible)
-- Autocomplete and go-to-definition for QML components
+- Live QML design view
 
-To open: **File → Open File or Project** in Qt Creator, select `qt_qml_project.qmlproject`.
+To open: **File → Open File or Project** in Qt Design Studio, select `qt_qml_project.qmlproject`.
 
 > The `.qmlproject` file is for design-time tooling only. The actual build uses CMake.
 
@@ -126,6 +125,27 @@ qt-qml-project/
 ![alt text](docs/image.png)
 ![alt text](docs/image-1.png)
 ![alt text](docs/image-2.png)
+
+---
+
+## QT QML Cheat Sheet
+C++ as engine, QML as steering wheel.
+ * **Properties (Q_PROPERTY) ── The State (CRUD)**
+   * **What it is:** A smart variable wrapper (buyerName, currentPrice).
+   * **Pointer:** Keeps C++ data variables and QML UI elements perfectly synchronized. If C++ updates a value, QML updates the screen automatically.
+ * **Signals (signals:) ── The Broadcasters (Notifications)**
+   * **What it is:** An event alarm (currentPriceChanged(), recordsChanged()).
+   * **Pointer:** Functions with *no body* in C++. You just emit them to shout, *"Hey! Something changed, come update yourself!"*
+ * **Slots (public slots:) ── The Actions (Responders)**
+   * **What it is:** Normal C++ functions (onExport(), onAddRecord()) made visible to the event loop.
+   * **Pointer:** Written and executed entirely in **C++**, but triggered easily by QML UI interactions (like clicking a button).
+ * **Invokables (Q_INVOKABLE) ── The Direct Hotline**
+   * **What it is:** Standard C++ methods (setBuyerName()) exposed to the frontend.
+   * **Pointer:** Allows QML to directly execute specific C++ backend logic or pass raw parameters down on demand.
+### The Golden Rule of Qt Bridge Architecture
+>  * **Data goes UP** (C++ \rightarrow QML) via **Properties** and **Signals**.
+>  * **Commands go DOWN** (QML \rightarrow C++) via **Slots** and **Invokables**.
+>
 
 ---
 
