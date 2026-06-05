@@ -19,18 +19,18 @@ qt_add_executable(${PROJECT_NAME})
 qt_add_qml_module(${PROJECT_NAME}
     URI CashierApp
     VERSION 1.0
-    QML_FILES
-        qml/Main.qml
-        qml/LoginPage.qml
-        qml/MainPage.qml
-        qml/tabs/CashierTab.qml
-        qml/tabs/AboutTab.qml
     SOURCES
         src/main.cpp
         src/Models.h
         src/AuthViewModel.h    src/AuthViewModel.cpp
         src/CashierViewModel.h src/CashierViewModel.cpp
         src/DeviceViewModel.h  src/DeviceViewModel.cpp
+    QML_FILES
+        qml/Main.qml
+        qml/LoginPage.qml
+        qml/MainPage.qml
+        qml/tabs/CashierTab.qml
+        qml/tabs/AboutTab.qml
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
