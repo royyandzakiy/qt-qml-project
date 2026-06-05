@@ -14,10 +14,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick Widgets Sql SerialP
 
 qt_standard_project_setup(REQUIRES 6.8)
 
-qt_add_executable(${PROJECT_NAME}
-    src/main.cpp
-    src/Models.h
-)
+qt_add_executable(${PROJECT_NAME})
 
 qt_add_qml_module(${PROJECT_NAME}
     URI CashierApp
@@ -29,6 +26,8 @@ qt_add_qml_module(${PROJECT_NAME}
         qml/tabs/CashierTab.qml
         qml/tabs/AboutTab.qml
     SOURCES
+        src/main.cpp
+        src/Models.h
         src/AuthViewModel.h    src/AuthViewModel.cpp
         src/CashierViewModel.h src/CashierViewModel.cpp
         src/DeviceViewModel.h  src/DeviceViewModel.cpp
